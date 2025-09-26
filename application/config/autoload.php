@@ -60,6 +60,11 @@ $autoload['packages'] = array();
 */
 $autoload['libraries'] = array('database', 'form_validation');
 
+// Conditionally autoload migrations library when AUTO_MIGRATE env var is true
+if (filter_var(getenv('AUTO_MIGRATE'), FILTER_VALIDATE_BOOLEAN)) {
+	$autoload['libraries'][] = 'migration';
+}
+
 /*
 | -------------------------------------------------------------------
 |  Auto-load Drivers

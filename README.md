@@ -42,6 +42,14 @@ O **Conecta Lá** é uma aplicação web completa que demonstra as melhores prá
 - **Apache 2.4** - Servidor web
 - **phpMyAdmin** - Interface de administração do banco
 
+### Infraestrutura / Deploy
+
+- **VPS (Ubuntu)**: a aplicação pode ser implantada em uma VPS rodando Ubuntu (instância de produção).
+- **Cloudflare**: usamos Cloudflare para DNS, proteção básica, WAF/Rate limiting e caching na borda.
+- **CDN**: assets estáticos podem ser servidos por uma CDN para melhor desempenho (cache de CSS/JS/imagens).
+- **Certificados SSL**: HTTPS com certificados gerenciados (Let's Encrypt ou provisionamento via provedor/Cloudflare).
+- **Docker**: desenvolvimento e deploy usam imagens Docker (PHP + Apache). CI/CD pode construir e publicar essas imagens.
+
 ### APIs Externas
 - **wttr.in** - API de clima gratuita (sem chave necessária)
 - **OpenAPI/Swagger** - Documentação automática da API
