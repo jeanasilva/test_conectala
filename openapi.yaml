@@ -1,0 +1,166 @@
+openapi: 3.0.1
+info:
+  title: Test Conectala API
+  version: 1.0.0
+  description: API RESTful para gerenciamento de usuários e integração de clima (exemplo).
+servers:
+  - url: http://localhost:8080/
+paths:
+  /users:
+    get:
+      summary: List all users
+      responses:
+        '200':
+          description: A JSON array of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+    post:
+      summary: Create a new user
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  id:
+                    type: integer
+  /users/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+    get:
+      summary: Get a user by id
+      responses:
+        '200':
+          description: A user object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/User'
+        '404':
+          description: Not found
+    put:
+      summary: Update a user
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: User updated
+    delete:
+      summary: Delete a user
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: User deleted
+
+  /weather/{city}:
+    parameters:
+      - in: path
+        name: city
+        schema:
+          type: string
+        required: true
+    get:
+      summary: Get stored weather for a city
+      responses:
+        '200':
+          description: Weather data for city
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Weather'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    UserCreate:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    UserUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    Weather:
+      type: object
+      properties:
+        city:
+          type: string
+        temperature:
+          type: number
+          format: float
+        description:
+          type: string
+        fetched_at:
+          type: string
+          format: date-time
