@@ -104,10 +104,10 @@
 <body>
   <nav class="navbar navbar-expand-lg">
     <div class="container">
-      <a class="navbar-brand" href="http://localhost:8080/"><i class="fas fa-link"></i> Conecta Lá</a>
+  <a class="navbar-brand" href="<?= base_url() ?>"><i class="fas fa-link"></i> Conecta Lá</a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="http://localhost:8080/index.php/register"><i class="fas fa-user-plus"></i> Registrar</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= base_url('index.php/register') ?>"><i class="fas fa-user-plus"></i> Registrar</a></li>
         </ul>
       </div>
     </div>

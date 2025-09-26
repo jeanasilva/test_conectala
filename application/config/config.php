@@ -23,7 +23,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = getenv('BASE_URL') ?: 'http://localhost:8080/';
+$prod_url = 'https://conectala.jeansilva.dev.br/';
+$env_base = getenv('BASE_URL') ?: NULL;
+if (defined('ENVIRONMENT') && ENVIRONMENT === 'production') {
+	$config['base_url'] = $env_base ?: $prod_url;
+} else {
+	$config['base_url'] = $env_base ?: 'http://localhost:8080/';
+}
 
 /*
 |--------------------------------------------------------------------------

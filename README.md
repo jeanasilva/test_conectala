@@ -1,5 +1,8 @@
 # 🌐 Conecta Lá - Sistema de Teste
 
+> Nota: em produção a aplicação está disponível em: https://conectala.jeansilva.dev.br/
+> Nos exemplos abaixo (curl, URLs locais), substitua `http://localhost:8080` por essa URL quando testar o ambiente de produção.
+
 [![PHP](https://img.shields.io/badge/PHP-7.4.33-blue.svg)](https://php.net)
 [![CodeIgniter](https://img.shields.io/badge/CodeIgniter-3.1.13-red.svg)](https://codeigniter.com)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)](https://mysql.com)

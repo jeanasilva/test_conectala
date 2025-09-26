@@ -112,11 +112,11 @@
 <body>
   <nav class="navbar navbar-expand-lg">
     <div class="container">
-      <a class="navbar-brand" href="#"><i class="fas fa-link"></i> Conecta Lá</a>
+  <a class="navbar-brand" href="<?= base_url() ?>"><i class="fas fa-link"></i> Conecta Lá</a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="http://localhost:8080/index.php/login"><i class="fas fa-sign-in-alt"></i> Entrar</a></li>
-          <li class="nav-item"><a class="nav-link" href="http://localhost:8080/index.php/register"><i class="fas fa-user-plus"></i> Registrar</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= base_url('index.php/login') ?>"><i class="fas fa-sign-in-alt"></i> Entrar</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= base_url('index.php/register') ?>"><i class="fas fa-user-plus"></i> Registrar</a></li>
         </ul>
       </div>
     </div>
@@ -126,8 +126,8 @@
     <div class="container">
       <h1 class="hero-title">Sistema de Teste Conecta Lá</h1>
       <p class="hero-subtitle">Uma plataforma completa para testes e desenvolvimento de aplicações web</p>
-      <a href="http://localhost:8080/index.php/login" class="btn btn-primary me-3"><i class="fas fa-play"></i> Começar</a>
-      <a href="http://localhost:8080/index.php/docs" class="btn btn-outline-primary"><i class="fas fa-book"></i> Documentação</a>
+  <a href="<?= base_url('index.php/login') ?>" class="btn btn-primary me-3"><i class="fas fa-play"></i> Começar</a>
+  <a href="<?= base_url('index.php/docs') ?>" class="btn btn-outline-primary"><i class="fas fa-book"></i> Documentação</a>
     </div>
   </section>
 

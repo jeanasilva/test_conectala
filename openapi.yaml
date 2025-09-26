@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: API RESTful para gerenciamento de usuários e integração de clima (exemplo).
 servers:
-  - url: http://localhost:8080/
+  - url: https://conectala.jeansilva.dev.br/
 paths:
   /users:
     get:
