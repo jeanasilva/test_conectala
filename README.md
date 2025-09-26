@@ -324,6 +324,28 @@ TOKEN=$(curl -s -X POST http://localhost/index.php/auth/login \
 
 Observação: Se remover `index.php` da URL com rewrite, ajuste as URLs conforme a configuração do seu servidor.
 
+## 🚀 Deploy / GitHub Actions
+
+Este repositório inclui um workflow (`.github/workflows/deploy.yml`) e um script de deploy (`scripts/deploy.sh`) que automatizam o deploy via SSH no push para a branch `main`.
+
+Secrets recomendados no GitHub (Settings > Secrets > Actions):
+
+Como funciona:
+
+1. Ao dar push em `main`, a Action faz checkout do código.
+2. A Action copia `scripts/deploy.sh` para o servidor via `scp` (usa `SSH_PRIVATE_KEY` quando disponível, ou `sshpass` com `SERVER_PASSWORD`).
+3. A Action executa o script remoto que faz `git reset --hard origin/main`, ajusta os mapeamentos de portas no `docker-compose.yml` (substitui `8080:80` e `8082:80` pelos valores informados) e roda `docker compose up -d --build`.
+
+Observações e segurança:
+- Preferível usar `SSH_PRIVATE_KEY` em vez de senha.
+- O script faz alterações simples no `docker-compose.yml` e cria um backup `docker-compose.yml.bak` antes.
+- Ajuste `scripts/deploy.sh` conforme sua topologia (por exemplo, se usa docker swarm, traefik, ou outras portas).
+
+Nota: neste servidor usamos `nginx` como proxy reverso para rotear domínios/ports para os containers. O deploy altera os mapeamentos de porta do compose para evitar conflitos com containers existentes (por exemplo, usa `8020` em vez de `8080`). Se você administra um Nginx externo, ajuste as regras de proxy/reverse proxy para apontar para as portas escolhidas.
+
+Para disparar manualmente, faça um commit na `main` ou abra um pull request que seja merged em `main`.
+
+
 ## Segurança e Boas Práticas
 
 - Senhas armazenadas com `password_hash`.

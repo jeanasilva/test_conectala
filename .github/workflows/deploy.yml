@@ -1,0 +1,57 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: Deploy via SSH
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare SSH
+        id: ssh-setup
+        run: |
+          set -e
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          if [ -n "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            echo "Using SSH key from secrets"
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+          else
+            echo "No SSH key provided, will use password via sshpass (requires SERVER_PASSWORD secret)."
+          fi
+
+      - name: Copy repository to server (root path)
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          set -e
+          # Copy the full repository to /root/test_conectala on the server. This avoids needing a REMOTE_DIR secret.
+          if [ -n "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            scp -o StrictHostKeyChecking=no -r . ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/root/test_conectala
+          else
+            sudo apt-get update -y && sudo apt-get install -y sshpass
+            sshpass -p "${{ secrets.SERVER_PASSWORD }}" scp -o StrictHostKeyChecking=no -r . ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/root/test_conectala
+          fi
+
+      - name: Run deploy script on server (assumes /root/test_conectala)
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          APP_PORT: ${{ secrets.APP_PORT }}
+          PHPMYADMIN_PORT: ${{ secrets.PHPMYADMIN_PORT }}
+        run: |
+          set -e
+          if [ -n "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} 'sudo bash /root/test_conectala/scripts/deploy.sh "${APP_PORT:-8020}" "${PHPMYADMIN_PORT:-8021}"'
+          else
+            sudo apt-get update -y && sudo apt-get install -y sshpass
+            sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} 'sudo bash /root/test_conectala/scripts/deploy.sh "${APP_PORT:-8020}" "${PHPMYADMIN_PORT:-8021}"'
+          fi
