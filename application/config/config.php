@@ -28,7 +28,7 @@ $env_base = getenv('BASE_URL') ?: NULL;
 if (defined('ENVIRONMENT') && ENVIRONMENT === 'production') {
 	$config['base_url'] = $env_base ?: $prod_url;
 } else {
-	$config['base_url'] = $env_base ?: 'http://localhost:8080/';
+	$config['base_url'] = $env_base ?: 'https://conectala.jeansilva.dev.br/';
 }
 
 /*
